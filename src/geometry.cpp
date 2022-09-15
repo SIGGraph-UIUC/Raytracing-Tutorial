@@ -1,7 +1,8 @@
 #include "geometry.h"
 
-Sphere::Sphere(const Matrix4d& transformation) : 
-	m_transformation{ transformation }
+Sphere::Sphere(const Matrix4d& transformation, const Material& material) : 
+	m_transformation{ transformation },
+    m_material{ material }
 {
 
 }
@@ -27,4 +28,13 @@ std::vector<double> Sphere::intersect(const Ray& ray) const
         intersects.push_back((-b - sqrt(discriminant)) / (2 * a));
     }
     return intersects;
+}
+
+Tuple4d Sphere::normal(const Tuple4d& hit_point) const
+{
+    Tuple4d transformed_point = m_transformation.inverse() * hit_point;
+    Tuple4d object_normal = transformed_point - point(0, 0, 0);
+    Tuple4d world_normal = m_transformation.inverse().transpose() * object_normal;
+    world_normal(3) = 0;
+    return world_normal.normalize();
 }
