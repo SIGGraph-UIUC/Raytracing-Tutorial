@@ -9,6 +9,7 @@ private:
 	float m_ambient, m_diffuse, m_specular, m_shininess;
 
 public:
+	Material();
 	Material(const Color& color, float ambient, float diffuse, float specular, float shininess);
 
 	const Color& color() const { return m_color; }

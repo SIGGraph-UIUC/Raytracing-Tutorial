@@ -1,7 +1,8 @@
 #include "light.h"
 
-PointLight::PointLight(const Tuple4d& position, const Color& intensity) :
+PointLight::PointLight(const Tuple4d& position, const Color& color, double intensity) :
 	m_position{ position },
+	m_color{ color },
 	m_intensity{ intensity }
 {
 
@@ -17,7 +18,7 @@ Color PointLight::phong_shading(const Sphere& object, const Tuple4d& position, c
 	Color ret{ 0, 0, 0 };
 
 	Material mat = object.material();
-	Color effective_color = hadamard_product(mat.color(), m_intensity);
+	Color effective_color = hadamard_product(mat.color(), m_color) * m_intensity;
 
 	Tuple4d light_direction = direction(position);
 	double light_dot_normal = dot(light_direction, normal);
@@ -31,11 +32,13 @@ Color PointLight::phong_shading(const Sphere& object, const Tuple4d& position, c
 			ret += diffuse;
 		else
 		{
-			Color specular = m_intensity * mat.specular() * pow(reflect_dot_eye, mat.shininess());
+			Color specular = m_color * mat.specular() * pow(reflect_dot_eye, mat.shininess());
 			ret += diffuse + specular;
 		}
 	}
 
 	ret += effective_color * mat.ambient();
-	return ret;
+
+	double distance = (position - m_position).magnitude();
+	return ret / (1 + 0.01 * pow(distance, 2));
 }

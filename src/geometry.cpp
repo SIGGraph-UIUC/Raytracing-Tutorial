@@ -7,6 +7,12 @@ Sphere::Sphere(const Matrix4d& transformation, const Material& material) :
 
 }
 
+Sphere::Sphere(const Sphere& other)
+{
+    m_transformation = other.m_transformation;
+    m_material = other.m_material;
+}
+
 void Sphere::transform(const Matrix4d& transformation)
 {
     m_transformation = m_transformation * transformation;;

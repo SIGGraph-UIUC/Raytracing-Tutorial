@@ -9,10 +9,11 @@
 class PointLight {
 private:
 	Tuple4d m_position;
-	Color m_intensity;
+	Color m_color;
+	double m_intensity;
 
 public:
-	PointLight(const Tuple4d& position, const Color& intensity);
+	PointLight(const Tuple4d& position, const Color& color, double intensity);
 
 	Tuple4d direction(const Tuple4d& hit_point) const;
 	Color phong_shading(const Sphere& object, const Tuple4d& position, const Tuple4d& eye, const Tuple4d& normal) const;

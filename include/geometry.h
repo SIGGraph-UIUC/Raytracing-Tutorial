@@ -5,7 +5,6 @@
 
 #include "util/tuple.h"
 #include "util/matrix.h"
-#include "intersection.h"
 #include "material.h"
 #include "ray.h"
 
@@ -16,6 +15,7 @@ private:
 
 public:
 	Sphere(const Matrix4d& transformation, const Material& material);
+	Sphere(const Sphere& other);
 
 	const Material& material() const { return m_material; }
 
